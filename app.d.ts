@@ -1,6 +1,6 @@
 interface Args {
   [x: string]: unknown;
-  minPath: string;
+  dir: string;
   editor: string;
   cfg: string;
   _: (string | number)[];

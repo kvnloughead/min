@@ -1,8 +1,10 @@
-import { copy } from "../deps.ts";
-import { join } from "std/path/mod.ts";
+// @deno-types="../app.d.ts"
+
+import { copy } from '../deps.ts';
+import { join } from 'std/path/mod.ts';
 
 async function view(args: Args) {
-  const filepath = join(args.minPath, `${args._[1]}.${args.ext}`);
+  const filepath = join(args.dir, `${args._[1]}.${args.ext}`);
   console.log(filepath);
 
   const file = await Deno.open(filepath);
