@@ -5,6 +5,7 @@ import { parse } from 'std/flags/mod.ts';
 
 import edit from './commands/edit.ts';
 import view from './commands/view.ts';
+import open from './commands/open.ts';
 
 import { help } from './utils/help.ts';
 
@@ -13,7 +14,7 @@ const args: Args = parse(Deno.args, {
     cfg: `/home/kevin/.config/min/settings.json`,
     dir: `/home/kevin/Dropbox/min/`,
     extension: `md`,
-    editor: `code`,
+    editor: `vim`,
   },
   string: ['cfg', 'dir', 'editor', 'ext'],
   alias: {
@@ -21,6 +22,7 @@ const args: Args = parse(Deno.args, {
     extension: ['x', 'ext'],
     dir: 'd',
     cfg: ['c', 'config'],
+    help: ['h'],
   },
 });
 
@@ -32,21 +34,24 @@ if (args._.length === 0 || ['-h', '--help', 'help'].includes(String(args._))) {
 const command = args._[0];
 switch (command) {
   case 'edit':
-    if (!args._[1]) {
-      console.error(
-        `\nPlease specify a page to edit. \nUsage: min edit <page>\n`,
-      );
+    if (!args._[1] || args.help) {
+      help.edit();
     } else {
       edit(args);
     }
     break;
   case 'view':
-    if (!args._[1]) {
-      console.error(
-        `\nPlease specify a page to view. \nUsage: min edit <page>\n`,
-      );
+    if (!args._[1] || args.help) {
+      help.view();
     } else {
       view(args);
+    }
+    break;
+  case 'open':
+    if (args.help) {
+      help.open();
+    } else {
+      open(args);
     }
     break;
   default:
