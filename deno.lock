@@ -1,0 +1,25 @@
+{
+  "version": "2",
+  "remote": {
+    "https://deno.land/std@0.107.0/_util/assert.ts": "2f868145a042a11d5ad0a3c748dcf580add8a0dbc0e876eaa0026303a5488f58",
+    "https://deno.land/std@0.107.0/bytes/mod.ts": "440684e07e8f57a19a43b34d57eb63af0b36fc92b6657b6dcdbf9d5612d62e29",
+    "https://deno.land/std@0.107.0/fmt/colors.ts": "8368ddf2d48dfe413ffd04cdbb7ae6a1009cf0dccc9c7ff1d76259d9c61a0621",
+    "https://deno.land/std@0.107.0/io/buffer.ts": "3ead6bb11276ebcf093c403f74f67fd2205a515dbbb9061862c468ca56f37cd8",
+    "https://deno.land/std@0.107.0/io/types.d.ts": "89a27569399d380246ca7cdd9e14d5e68459f11fb6110790cc5ecbd4ee7f3215",
+    "https://deno.land/std@0.107.0/io/util.ts": "85c33d61b20fd706acc094fe80d4c8ae618b04abcf3a96ca2b47071842c1c8ac",
+    "https://deno.land/std@0.107.0/testing/_diff.ts": "ccd6c3af6e44c74bf1591acb1361995f5f50df64323a6e7fb3f16c8ea792c940",
+    "https://deno.land/std@0.107.0/testing/asserts.ts": "05ab5d53d1e2b8402987c50c622d6d8e6f89d63c0798ab26923ea5fcbe10f9ed",
+    "https://deno.land/std@0.177.0/_util/asserts.ts": "178dfc49a464aee693a7e285567b3d0b555dc805ff490505a8aae34f9cfb1462",
+    "https://deno.land/std@0.177.0/_util/os.ts": "d932f56d41e4f6a6093d56044e29ce637f8dcc43c5a90af43504a889cf1775e3",
+    "https://deno.land/std@0.177.0/flags/mod.ts": "d1cdefa18472ef69858a17df5cf7c98445ed27ac10e1460183081303b0ebc270",
+    "https://deno.land/std@0.177.0/path/_constants.ts": "e49961f6f4f48039c0dfed3c3f93e963ca3d92791c9d478ac5b43183413136e0",
+    "https://deno.land/std@0.177.0/path/_interface.ts": "6471159dfbbc357e03882c2266d21ef9afdb1e4aa771b0545e90db58a0ba314b",
+    "https://deno.land/std@0.177.0/path/_util.ts": "d7abb1e0dea065f427b89156e28cdeb32b045870acdf865833ba808a73b576d0",
+    "https://deno.land/std@0.177.0/path/common.ts": "ee7505ab01fd22de3963b64e46cff31f40de34f9f8de1fff6a1bd2fe79380000",
+    "https://deno.land/std@0.177.0/path/glob.ts": "d479e0a695621c94d3fd7fe7abd4f9499caf32a8de13f25073451c6ef420a4e1",
+    "https://deno.land/std@0.177.0/path/mod.ts": "4b83694ac500d7d31b0cdafc927080a53dc0c3027eb2895790fb155082b0d232",
+    "https://deno.land/std@0.177.0/path/posix.ts": "8b7c67ac338714b30c816079303d0285dd24af6b284f7ad63da5b27372a2c94d",
+    "https://deno.land/std@0.177.0/path/separator.ts": "0fb679739d0d1d7bf45b68dacfb4ec7563597a902edbaf3c59b50d5bcadd93b1",
+    "https://deno.land/std@0.177.0/path/win32.ts": "d186344e5583bcbf8b18af416d13d82b35a317116e6460a5a3953508c3de5bba"
+  }
+}
