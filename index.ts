@@ -14,7 +14,7 @@ const args: Args = parse(Deno.args, {
     cfg: `/home/kevin/.config/min/settings.json`,
     dir: `/home/kevin/Dropbox/min/`,
     extension: `md`,
-    editor: `vim`,
+    editor: `code`,
   },
   string: ['cfg', 'dir', 'editor', 'ext'],
   alias: {
