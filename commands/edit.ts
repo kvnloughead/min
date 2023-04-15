@@ -8,7 +8,7 @@ async function openFileInEditor(editor: string, filepath: string) {
 }
 
 async function edit(args: Args) {
-  const filepath = join(args.dir, `${args._[1]}.${args.ext}`);
+  const filepath = join(args.dir, `${args._[1]}.${args.extension}`);
   try {
     const file = await Deno.open(filepath);
     file.close();

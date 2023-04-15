@@ -2,29 +2,30 @@
 // @deno-types="./app.d.ts"
 
 import { parse } from 'std/flags/mod.ts';
-
 import edit from './commands/edit.ts';
 import view from './commands/view.ts';
 import open from './commands/open.ts';
 
 import { help } from './utils/help.ts';
+import { parseJsonFile } from './utils/helpers.ts';
 
-const args: Args = parse(Deno.args, {
-  default: {
-    cfg: `/home/kevin/.config/min/settings.json`,
-    dir: `/home/kevin/Dropbox/min/`,
-    extension: `md`,
-    editor: `code`,
-  },
-  string: ['cfg', 'dir', 'editor', 'ext'],
-  alias: {
-    editor: 'e',
-    extension: ['x', 'ext'],
-    dir: 'd',
-    cfg: ['c', 'config'],
-    help: ['h'],
-  },
-});
+const defaults = await parseJsonFile('./defaults.json');
+const config = await parseJsonFile(defaults.cfg);
+
+const args: Args = {
+  ...defaults,
+  ...config,
+  ...parse(Deno.args, {
+    string: ['cfg', 'dir', 'editor', 'ext'],
+    alias: {
+      editor: 'e',
+      extension: ['x', 'ext'],
+      dir: 'd',
+      cfg: ['c', 'config'],
+      help: ['h'],
+    },
+  }),
+};
 
 if (args._.length === 0 || ['-h', '--help', 'help'].includes(String(args._))) {
   help.app();
