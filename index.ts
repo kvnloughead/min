@@ -1,8 +1,7 @@
 #!/usr/bin/env deno run --allow-env --allow-read
 // @deno-types="./app.d.ts"
 
-import { parse } from 'std/flags/mod.ts';
-
+import { parse } from './deps.ts';
 import edit from './commands/edit.ts';
 import view from './commands/view.ts';
 import open from './commands/open.ts';
