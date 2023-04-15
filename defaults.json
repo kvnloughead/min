@@ -1,6 +1,6 @@
 {
-  "cfg": "/home/kevin/.config/min/settings.json",
-  "dir": "/home/kevin/.config/min/notes",
+  "cfg": ".config/min/settings.json",
+  "dir": ".config/min/notes",
   "extension": "md",
   "editor": "vim"
 }

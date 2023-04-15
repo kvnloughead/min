@@ -2,26 +2,28 @@
 // @deno-types="./app.d.ts"
 
 import { parse } from 'std/flags/mod.ts';
+
 import edit from './commands/edit.ts';
 import view from './commands/view.ts';
 import open from './commands/open.ts';
 
 import { help } from './utils/help.ts';
-import { parseJsonFile } from './utils/helpers.ts';
+import { getUserSettings } from './utils/config.ts';
 
-const defaults = await parseJsonFile('./defaults.json');
-const config = await parseJsonFile(defaults.cfg);
+const settings = await getUserSettings(`./defaults.json`);
+
+console.log(settings);
 
 const args: Args = {
-  ...defaults,
-  ...config,
+  ...settings,
   ...parse(Deno.args, {
     string: ['cfg', 'dir', 'editor', 'ext'],
     alias: {
+      category: ['c', 'cat'],
+      cfg: ['config'],
+      dir: 'd',
       editor: 'e',
       extension: ['x', 'ext'],
-      dir: 'd',
-      cfg: ['c', 'config'],
       help: ['h'],
     },
   }),
