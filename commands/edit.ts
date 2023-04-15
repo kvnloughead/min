@@ -1,6 +1,6 @@
 // @deno-types="../app.d.ts"
 
-import { join } from 'std/path/mod.ts';
+import { path } from '../deps.ts';
 
 import { writeMetadataToFile } from '../utils/lib.ts';
 
@@ -20,22 +20,24 @@ function getMetadata(args: Args) {
 }
 
 async function edit(args: Args) {
+  const dirpath = path.join(args.dir, args.category);
   const basename = `${args._[1]}.${args.extension}`;
-  const filepath = join(args.dir, basename);
+  const filepath = path.join(dirpath, basename);
   try {
     const file = await Deno.open(filepath);
     file.close();
     openFileInEditor(args.editor, filepath);
   } catch (err) {
-    console.log(err);
-    const createNew = prompt(
-      `File doesn't exist: ${basename}.\nWould like like to create it? (yes|no): `,
-    );
-    if (createNew && ['y', 'yes'].includes(createNew.toLowerCase())) {
-      const metadata = getMetadata(args);
-      await Deno.mkdir(args.dir, { recursive: true });
-      await writeMetadataToFile(filepath, metadata);
-      openFileInEditor(args.editor, filepath);
+    if (err.name === 'NotFound') {
+      const createNew = prompt(
+        `File doesn't exist: ${basename}.\nWould like like to create it? (yes|no): `,
+      );
+      if (createNew && ['y', 'yes'].includes(createNew.toLowerCase())) {
+        const metadata = getMetadata(args);
+        await Deno.mkdir(dirpath, { recursive: true });
+        await writeMetadataToFile(filepath, metadata);
+        openFileInEditor(args.editor, filepath);
+      }
     }
   }
 }
