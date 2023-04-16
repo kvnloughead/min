@@ -1,0 +1,11 @@
+{
+  "cfg": ".config/min/settings.json",
+  "dir": ".config/min",
+  "extension": "md",
+  "editor": "vim",
+  "category": "notes",
+  "dev": {
+    "cfg": ".config/min/dev/settings.json",
+    "dir": ".config/min/dev"
+  }
+}

@@ -7,26 +7,23 @@ import view from './commands/view.ts';
 import open from './commands/open.ts';
 
 import { help } from './utils/help.ts';
-import { getUserSettings } from './utils/config.ts';
+import { getUserSettings } from './config/index.ts';
+import { DEFAULT_CONFIG } from './utils/constants.ts';
 
-const settings = await getUserSettings(`./defaults.json`);
+let args: Args = parse(Deno.args, {
+  string: ['cfg', 'dir', 'editor', 'ext'],
+  alias: {
+    category: ['c', 'cat'],
+    cfg: ['config'],
+    dir: 'd',
+    editor: 'e',
+    extension: ['x', 'ext'],
+    help: ['h'],
+  },
+});
 
-console.log(settings);
-
-const args: Args = {
-  ...settings,
-  ...parse(Deno.args, {
-    string: ['cfg', 'dir', 'editor', 'ext'],
-    alias: {
-      category: ['c', 'cat'],
-      cfg: ['config'],
-      dir: 'd',
-      editor: 'e',
-      extension: ['x', 'ext'],
-      help: ['h'],
-    },
-  }),
-};
+const settings = await getUserSettings(DEFAULT_CONFIG, args);
+args = { ...args, ...settings };
 
 if (args._.length === 0 || ['-h', '--help', 'help'].includes(String(args._))) {
   help.app();
