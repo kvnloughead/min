@@ -19,5 +19,5 @@ export async function parseJsonFile(filepath: string): Promise<Args> {
 
 export function addUserDir(filepath: string) {
   const home = Deno.env.get('HOME') || '';
-  return path.join(home, filepath);
+  return filepath.startsWith(home) ? filepath : path.join(home, filepath);
 }

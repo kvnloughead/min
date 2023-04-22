@@ -1,6 +1,0 @@
-{
-  "cfg": ".config/min/settings.json",
-  "dir": ".config/min/notes",
-  "extension": "md",
-  "editor": "vim"
-}

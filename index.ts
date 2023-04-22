@@ -11,6 +11,7 @@ import { getUserSettings } from './config/index.ts';
 import { DEFAULT_CONFIG } from './utils/constants.ts';
 
 let args: Args = parse(Deno.args, {
+  boolean: ['dev', 'help'],
   string: ['cfg', 'dir', 'editor', 'ext'],
   alias: {
     category: ['c', 'cat'],
