@@ -6,7 +6,7 @@ import edit from './commands/edit.ts';
 import view from './commands/view.ts';
 import open from './commands/open.ts';
 
-import { help } from './utils/help.ts';
+import { helpWriter } from './utils/HelpWriter.ts';
 import { getUserSettings } from './config/index.ts';
 import { DEFAULT_CONFIG } from './utils/constants.ts';
 
@@ -27,7 +27,7 @@ const settings = await getUserSettings(DEFAULT_CONFIG, args);
 args = { ...args, ...settings };
 
 if (args._.length === 0 || ['-h', '--help', 'help'].includes(String(args._))) {
-  help.app();
+  helpWriter.write();
   Deno.exit(0);
 }
 
@@ -35,21 +35,21 @@ const command = args._[0];
 switch (command) {
   case 'edit':
     if (!args._[1] || args.help) {
-      help.edit();
+      helpWriter.write('edit');
     } else {
       edit(args);
     }
     break;
   case 'view':
     if (!args._[1] || args.help) {
-      help.view();
+      helpWriter.write('view');
     } else {
       view(args);
     }
     break;
   case 'open':
     if (args.help) {
-      help.open();
+      helpWriter.write('open');
     } else {
       open(args);
     }
