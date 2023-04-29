@@ -7,6 +7,7 @@ type CommandDescriptions = Record<
   {
     usage: string;
     description: string;
+    examples?: string[][];
   }
 >;
 
@@ -18,59 +19,71 @@ type Option = {
 };
 
 type HelpOptions = {
+  name: string;
   commands: CommandDescriptions;
   options: Option[];
 };
 export class HelpWriter {
   private options: HelpOptions;
+  private name: string;
   private alignedNames: string[];
   private columnWidths: [number, number];
 
   constructor(options: HelpOptions) {
     this.options = options;
+    this.name = options.name;
     this.alignedNames = this.generateOptionsRows();
     this.options.options.forEach(
       (flag, i) => (flag.name = this.alignedNames[i]),
     );
-    this.columnWidths = this.calculateColumnWidths();
+    this.columnWidths = [0, 0];
   }
 
-  write(command?: Command) {
-    if (!command) {
-      this.writeAll();
-      return;
-    }
+  write(command: Command = 'app') {
+    this.columnWidths = this.calculateColumnWidths(command);
 
     if (!(command in this.options.commands)) {
       console.error(`Unknown command: ${command}`);
-      this.writeAll();
+      this.write('app');
       return;
     }
 
-    const { usage, description } = this.options.commands[command];
-    console.log(`\nUsage: min ${usage}\n\n${description}\n`);
-  }
-
-  private writeAll() {
-    console.log(
-      `\nUsage: min <command>\n\nDESCRIPTION\n\n  A minimal, DIY, man page supplement.\n  Run \`min <command> -h\` for command specific help.\n`,
-    );
-    console.log(this.generateCommandsTable());
+    console.log(this.generatePreamble(command));
+    command === 'app' && console.log(this.generateCommandsTable());
+    if (this.options.commands[command].examples !== undefined) {
+      console.log(this.generateExamplesTable(command));
+    }
     console.log(this.generateOptionsTable());
-    this.generateOptionsRows();
   }
 
-  private calculateColumnWidths(): [number, number] {
+  private generatePreamble(command: Command) {
+    const { usage, description } = this.options.commands[command];
+    return `\nUsage: ${
+      command !== 'app' ? this.name + ' ' : ''
+    }${usage}\n\nDESCRIPTION\n\n ${description}\n`;
+  }
+
+  private calculateColumnWidths(command: Command): [number, number] {
+    // generate command rows
     const commandEntries = Object.entries(this.options.commands);
     const commandRows = commandEntries.map(([command, { description }]) => [
       `min ${command}`,
       description,
     ]);
 
-    const optionRows = this.options.options.map(
+    // generate options rows
+    let optionRows = this.options.options.map(
       ({ name, alias, description }) => [`${alias ?? ''} ${name}`, description],
     );
 
+    // if there are examples, generate those
+    if (this.options.commands[command].examples !== undefined) {
+      optionRows = optionRows.concat(
+        this.options.commands[command].examples as string[][],
+      );
+    }
+
+    // determine column widths
     const columnWidths = commandRows.concat(optionRows).reduce(
       ([maxWidths1, maxWidths2], [column1, column2]) => [
         [
@@ -95,22 +108,19 @@ export class HelpWriter {
   }
 
   private generateCommandsTable() {
-    const commandEntries = Object.entries(this.options.commands);
-    const commandRows = commandEntries.map(([command, { description }]) => [
-      `min ${command}`.padEnd(this.columnWidths[0]),
+    const commandEntries = Object.entries(this.options.commands).filter(
+      (command) => command[0] !== 'app',
+    );
+    const commandRows = commandEntries.map(([_, { usage, description }]) => [
+      `min ${usage}`.padEnd(this.columnWidths[0]),
       description,
     ]);
 
-    return `\nCOMMANDS\n\n${generateTable(
-      commandRows,
-      2,
-      this.columnWidths,
-    )}\n`;
+    return `\nCOMMANDS\n\n${generateTable(commandRows, 2, this.columnWidths)}`;
   }
 
   private generateOptionsRows() {
     // parse the lists of flags
-
     const names = this.options.options.map(({ name }) => name.split(' '));
 
     names.forEach((aliases) => {
@@ -132,22 +142,49 @@ export class HelpWriter {
 
     return `\nOPTIONS\n\n${generateTable(optionRows, 2, [0, 0, 10, 0])}\n`;
   }
+
+  private generateExamplesTable(command: Command) {
+    const examples = this.options.commands[command].examples as string[][];
+    const exampleRows = examples.map(([ex, desc]) => [
+      ex.padEnd(this.columnWidths[0]),
+      desc,
+    ]);
+
+    return `\nEXAMPLES\n\n${generateTable(exampleRows, 2, [0, 0, 10, 0])}\n`;
+  }
 }
 
 const helpOptions: HelpOptions = {
+  name: 'min',
   commands: {
     app: {
-      usage: '',
-      description: 'A description of the "app" command',
+      usage: 'min <command>',
+      description: `A minimal, DIY, man page supplement.\n Run \`min <command> -h\` for command specific help.`,
     },
     edit: {
-      usage: 'edit [file]',
+      usage: 'edit basename',
       description:
-        'Opens a min page for editing. Creates a new page if none exists.',
+        'Opens a min page for editing. Creates a new page if none exists.\n Files are opened in the location specified by --dir, and in the chosen --editor.\n\n Files are stored in subdirectories according to their category (--cat).',
+      examples: [
+        ['min edit curl', 'Opens a file curl.md in default --dir for editing'],
+        [
+          'min edit --dir ~/sample-dir curl',
+          'Opens a file ~/sample-dir/curl.md for editing',
+        ],
+        ['min edit -e code curl', 'Opens curl.md in default --dir with vscode'],
+      ],
     },
     view: {
-      usage: 'view',
-      description: 'Output content of min page to the terminal',
+      usage: 'view basename',
+      description: 'Outputs the content of min page to the terminal.',
+      examples: [
+        ['min view curl', 'Opens a file curl.md in default --dir for editing'],
+        [
+          'min view --dir ~/sample-dir curl',
+          'Opens a file ~/sample-dir/curl.md for editing',
+        ],
+        ['min view -e code curl', 'Opens curl.md in default --dir with vscode'],
+      ],
     },
     open: {
       usage: 'open',
@@ -164,7 +201,7 @@ const helpOptions: HelpOptions = {
       description: 'Run in developer mode.',
     },
     {
-      name: '--cfg --config',
+      name: '--cfg',
       description: 'Path to config file.',
     },
     {
@@ -178,7 +215,6 @@ const helpOptions: HelpOptions = {
     {
       name: '-e --editor',
       description: 'The editor to open the note with.',
-      // default: 'vim',
     },
   ],
 };
