@@ -134,9 +134,9 @@ export class HelpWriter {
 
   private generateOptionsTable() {
     const optionRows = this.options.options.map(
-      ({ name, alias, description }) => [
+      ({ name, alias, description, default: defaultValue }) => [
         `${alias ?? ''} ${name}`.padEnd(this.columnWidths[0]),
-        description,
+        description + (defaultValue ? ` [default: ${defaultValue}]` : ''),
       ],
     );
 
@@ -211,10 +211,12 @@ const helpOptions: HelpOptions = {
     {
       name: '-c --cat',
       description: 'Category that the note should be placed in.',
+      default: 'notes',
     },
     {
       name: '-e --editor',
       description: 'The editor to open the note with.',
+      default: 'vim',
     },
   ],
 };
