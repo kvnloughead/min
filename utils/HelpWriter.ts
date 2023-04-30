@@ -6,6 +6,7 @@ type CommandDescriptions = Record<
   Command,
   {
     usage: string;
+    brief?: string;
     description: string;
     examples?: string[][];
   }
@@ -66,10 +67,12 @@ export class HelpWriter {
   private calculateColumnWidths(command: Command): [number, number] {
     // generate command rows
     const commandEntries = Object.entries(this.options.commands);
-    const commandRows = commandEntries.map(([command, { description }]) => [
-      `min ${command}`,
-      description,
-    ]);
+    const commandRows = commandEntries.map(
+      ([command, { description, brief }]) => [
+        `min ${command}`,
+        brief || description,
+      ],
+    );
 
     // generate options rows
     let optionRows = this.options.options.map(
@@ -111,11 +114,12 @@ export class HelpWriter {
     const commandEntries = Object.entries(this.options.commands).filter(
       (command) => command[0] !== 'app',
     );
-    const commandRows = commandEntries.map(([_, { usage, description }]) => [
-      `min ${usage}`.padEnd(this.columnWidths[0]),
-      description,
-    ]);
-
+    const commandRows = commandEntries.map(
+      ([_, { usage, brief, description }]) => [
+        `min ${usage}`.padEnd(this.columnWidths[0]),
+        brief || description,
+      ],
+    );
     return `\nCOMMANDS\n\n${generateTable(commandRows, 2, this.columnWidths)}`;
   }
 
@@ -163,8 +167,9 @@ const helpOptions: HelpOptions = {
     },
     edit: {
       usage: 'edit <basename>',
+      brief: 'Opens a min page for editing.',
       description:
-        'Opens a min page for editing. Creates a new page if none exists.\n Files are opened in the location specified by --dir, and in the chosen --editor.\n\n Files are stored in subdirectories according to their category (--cat).',
+        'Opens a min page for editing. Creates a new page if none exists.\n Files are opened in the location specified by --dir, and in the chosen --editor.\n Files are stored in subdirectories according to their category (--cat).',
       examples: [
         ['min edit curl', 'Opens a file curl.md in default --dir for editing'],
         [
@@ -183,7 +188,7 @@ const helpOptions: HelpOptions = {
     },
     view: {
       usage: 'view <basename>',
-      description: 'Outputs the content of min page to the terminal.',
+      description: 'Outputs min page to terminal.',
       examples: [
         ['min view curl', 'Opens a file curl.md in default --dir for editing'],
         [
