@@ -69,11 +69,27 @@ export function generateTable(
 /**
  * Parses a cli command, returning original command, or the appropriate alias.
  *
- * @param command - a cli command or alias
- * @returns - the command corresponding to the alias, or else the original command param
+ * @param {string} command - a cli command or alias
+ * @returns {{string|undefined}} - the command corresponding to the alias, or else the original command param
  */
 export function parseCommand(command: string): string | undefined {
   const commands = Object.keys(ALIASES.commands);
   if (commands.includes(command)) return command;
   return commands.find((key) => ALIASES.commands[key] === command) || command;
+}
+
+/**
+ *
+ * Confirms an action with the user if force is falsey.
+ *
+ * @param {boolean} force - If true, the action will be confirmed without prompting the user.
+ * @param {string} msg - The message to display to the user in the confirmation prompt.
+ * @returns {boolean} - Returns true if the user confirms the action or if force is truthy, otherwise false.
+ */
+export function confirmAction(force: boolean, msg: string) {
+  let confirm;
+  if (!force) {
+    confirm = prompt(msg);
+  }
+  return force || (confirm && ['y', 'yes'].includes(confirm.toLowerCase()));
 }

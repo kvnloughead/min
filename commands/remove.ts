@@ -1,6 +1,7 @@
 // @deno-types="../app.d.ts"
 
 import { path } from '../deps.ts';
+import { confirmAction } from '../utils/lib.ts';
 
 async function remove(args: Args) {
   let dirpath, basename, filepath, file;
@@ -10,14 +11,11 @@ async function remove(args: Args) {
     filepath = path.join(dirpath, basename);
     file = await Deno.open(filepath);
     file.close();
-    let confirm;
-    if (!args.force) {
-      confirm = prompt(`\nDelete: ${basename}? (yes|no): `);
-    }
-    if (
-      args.force ||
-      (confirm && ['y', 'yes'].includes(confirm.toLowerCase()))
-    ) {
+    const confirm = confirmAction(
+      args.force,
+      `\nDelete: ${basename}? (yes|no): `,
+    );
+    if (confirm) {
       await Deno.remove(filepath);
     }
   } catch (err) {

@@ -2,7 +2,7 @@
 
 import { path } from '../deps.ts';
 
-import { writeMetadataToFile } from '../utils/lib.ts';
+import { confirmAction, writeMetadataToFile } from '../utils/lib.ts';
 
 async function openFileInEditor(editor: string, filepath: string) {
   const process = Deno.run({ cmd: [editor, filepath] });
@@ -30,16 +30,11 @@ async function edit(args: Args) {
     openFileInEditor(args.editor, filepath);
   } catch (err) {
     if (err.name === 'NotFound') {
-      let confirm;
-      if (!args.force) {
-        confirm = prompt(
-          `File doesn't exist: ${basename}.\nWould like like to create it? (yes|no): `,
-        );
-      }
-      if (
-        args.force ||
-        (confirm && ['y', 'yes'].includes(confirm.toLowerCase()))
-      ) {
+      const confirm = confirmAction(
+        args.force,
+        `File doesn't exist: ${basename}.\nWould like like to create it? (yes|no): `,
+      );
+      if (confirm) {
         const metadata = getMetadata(args);
         await Deno.mkdir(dirpath, { recursive: true });
         await writeMetadataToFile(filepath, metadata);
@@ -48,5 +43,6 @@ async function edit(args: Args) {
     }
   }
 }
+// }
 
 export default edit;
