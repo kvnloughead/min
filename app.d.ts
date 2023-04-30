@@ -3,5 +3,5 @@ interface Args {
   dir: string;
   editor: string;
   cfg: string;
-  _: (string | number)[];
+  _: string[];
 }

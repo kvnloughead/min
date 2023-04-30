@@ -9,10 +9,11 @@ import open from './commands/open.ts';
 import { helpWriter } from './utils/HelpWriter.ts';
 import { getUserSettings } from './config/index.ts';
 import { DEFAULT_CONFIG } from './utils/constants.ts';
+import { parseCommand } from './utils/lib.ts';
 
 let args: Args = parse(Deno.args, {
   boolean: ['dev', 'help'],
-  string: ['cfg', 'dir', 'editor', 'ext'],
+  string: ['cfg', 'dir', 'editor', 'ext', '_'],
   alias: {
     category: ['c', 'cat'],
     cfg: ['config'],
@@ -31,7 +32,7 @@ if (args._.length === 0 || ['-h', '--help', 'help'].includes(String(args._))) {
   Deno.exit(0);
 }
 
-const command = args._[0];
+const command = parseCommand(args._[0]);
 switch (command) {
   case 'edit':
     if (!args._[1] || args.help) {
