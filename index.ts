@@ -13,7 +13,7 @@ import { DEFAULT_CONFIG } from './utils/constants.ts';
 import { parseCommand } from './utils/lib.ts';
 
 let args: Args = parse(Deno.args, {
-  boolean: ['dev', 'help'],
+  boolean: ['dev', 'help', 'force'],
   string: ['cfg', 'dir', 'editor', 'ext', '_'],
   alias: {
     category: ['c', 'cat'],
@@ -21,6 +21,7 @@ let args: Args = parse(Deno.args, {
     dir: 'd',
     editor: 'e',
     extension: ['x', 'ext'],
+    force: 'f',
     help: ['h'],
   },
 });

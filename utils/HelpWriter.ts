@@ -230,6 +230,11 @@ const helpOptions: HelpOptions = {
       description: 'The editor to open the note with.',
       default: 'vim',
     },
+    {
+      name: '-f --force',
+      description: 'Force command to run without confirmation.',
+      default: 'false',
+    },
   ],
 };
 

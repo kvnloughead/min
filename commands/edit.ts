@@ -30,10 +30,16 @@ async function edit(args: Args) {
     openFileInEditor(args.editor, filepath);
   } catch (err) {
     if (err.name === 'NotFound') {
-      const createNew = prompt(
-        `File doesn't exist: ${basename}.\nWould like like to create it? (yes|no): `,
-      );
-      if (createNew && ['y', 'yes'].includes(createNew.toLowerCase())) {
+      let confirm;
+      if (!args.force) {
+        confirm = prompt(
+          `File doesn't exist: ${basename}.\nWould like like to create it? (yes|no): `,
+        );
+      }
+      if (
+        args.force ||
+        (confirm && ['y', 'yes'].includes(confirm.toLowerCase()))
+      ) {
         const metadata = getMetadata(args);
         await Deno.mkdir(dirpath, { recursive: true });
         await writeMetadataToFile(filepath, metadata);
