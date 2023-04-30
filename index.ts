@@ -5,6 +5,7 @@ import { parse } from './deps.ts';
 import edit from './commands/edit.ts';
 import view from './commands/view.ts';
 import open from './commands/open.ts';
+import remove from './commands/remove.ts';
 
 import { helpWriter } from './utils/HelpWriter.ts';
 import { getUserSettings } from './config/index.ts';
@@ -39,6 +40,13 @@ switch (command) {
       helpWriter.write('edit');
     } else {
       edit(args);
+    }
+    break;
+  case 'remove':
+    if (!args._[1] || args.help) {
+      helpWriter.write('remove');
+    } else {
+      remove(args);
     }
     break;
   case 'view':

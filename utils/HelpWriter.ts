@@ -1,6 +1,6 @@
 import { generateRows, generateTable } from './lib.ts';
 
-type Command = 'app' | 'edit' | 'view' | 'open';
+type Command = 'app' | 'edit' | 'view' | 'open' | 'remove';
 
 type CommandDescriptions = Record<
   Command,
@@ -162,7 +162,7 @@ const helpOptions: HelpOptions = {
       description: `A minimal, DIY, man page supplement.\n Run \`min <command> -h\` for command specific help.`,
     },
     edit: {
-      usage: 'edit basename',
+      usage: 'edit <basename>',
       description:
         'Opens a min page for editing. Creates a new page if none exists.\n Files are opened in the location specified by --dir, and in the chosen --editor.\n\n Files are stored in subdirectories according to their category (--cat).',
       examples: [
@@ -174,8 +174,15 @@ const helpOptions: HelpOptions = {
         ['min edit -e code curl', 'Opens curl.md in default --dir with vscode'],
       ],
     },
+    remove: {
+      usage: 'remove <basename>',
+      description: 'Deletes the specified min page.',
+      examples: [
+        ['min remove foo', 'Removes foo.md from default --dir if it exists.'],
+      ],
+    },
     view: {
-      usage: 'view basename',
+      usage: 'view <basename>',
       description: 'Outputs the content of min page to the terminal.',
       examples: [
         ['min view curl', 'Opens a file curl.md in default --dir for editing'],

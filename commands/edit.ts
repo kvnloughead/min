@@ -20,11 +20,12 @@ function getMetadata(args: Args) {
 }
 
 async function edit(args: Args) {
-  const dirpath = path.join(args.dir, args.category);
-  const basename = `${args._[1]}.${args.extension}`;
-  const filepath = path.join(dirpath, basename);
+  let dirpath, basename, filepath, file;
   try {
-    const file = await Deno.open(filepath);
+    dirpath = path.join(args.dir, args.category);
+    basename = `${args._[1]}.${args.extension}`;
+    filepath = path.join(dirpath, basename);
+    file = await Deno.open(filepath);
     file.close();
     openFileInEditor(args.editor, filepath);
   } catch (err) {
