@@ -1,3 +1,5 @@
+import { ALIASES } from './constants.ts';
+
 import { path, yamlStringify } from '../deps.ts';
 
 export async function writeMetadataToFile(
@@ -62,4 +64,16 @@ export function generateTable(
   minWidths: number[] = [],
 ): string {
   return generateRows(data, indent, minWidths).join('\n');
+}
+
+/**
+ * Parses a cli command, returning original command, or the appropriate alias.
+ *
+ * @param command - a cli command or alias
+ * @returns - the command corresponding to the alias, or else the original command param
+ */
+export function parseCommand(command: string): string | undefined {
+  const commands = Object.keys(ALIASES.commands);
+  if (commands.includes(command)) return command;
+  return commands.find((key) => ALIASES.commands[key] === command) || command;
 }

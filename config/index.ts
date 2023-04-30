@@ -21,7 +21,7 @@ export async function getUserSettings(
   dir: string;
   editor: string;
   cfg: string;
-  _: (string | number)[]
+  _: string[];
   /**
    * Retrieves the user's settings from a JSON configuration file and combines them with default settings.
    *
@@ -33,7 +33,7 @@ export async function getUserSettings(
    * @param {string} args.cfg - The path to the user's JSON configuration file.
    * @returns {Promise<object>} A Promise that resolves with an object containing the combined settings.
    * @throws {Error} If there is an error reading or parsing the configuration files.
-   */;
+   */
 }> {
   const defaults = await parseJsonFile(defaultFile);
   // if args.dev is true, then the user is running in development mode
