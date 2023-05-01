@@ -235,6 +235,11 @@ const helpOptions: HelpOptions = {
       description: 'Force command to run without confirmation.',
       default: 'false',
     },
+    {
+      name: '-v --verbose',
+      description: 'Provide verbose logging and error reporting',
+      default: 'false',
+    },
   ],
 };
 

@@ -93,3 +93,9 @@ export function confirmAction(force: boolean, msg: string) {
   }
   return force || (confirm && ['y', 'yes'].includes(confirm.toLowerCase()));
 }
+
+export function logError(err: Error) {
+  console.log(`\n`);
+  console.error(err);
+  console.log(`\n`);
+}
