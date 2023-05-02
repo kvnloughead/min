@@ -99,3 +99,7 @@ export function logError(err: Error) {
   console.error(err);
   console.log(`\n`);
 }
+
+export function log(message?: unknown, ...optionalParams: unknown[]) {
+  console.log('\n' + message, ...optionalParams, '\n');
+}

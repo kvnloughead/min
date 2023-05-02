@@ -1,6 +1,6 @@
 import { generateRows, generateTable } from './lib.ts';
 
-type Command = 'app' | 'edit' | 'view' | 'open' | 'remove';
+type Command = 'app' | 'edit' | 'view' | 'open' | 'remove' | 'list';
 
 type CommandDescriptions = Record<
   Command,
@@ -201,6 +201,10 @@ const helpOptions: HelpOptions = {
     open: {
       usage: 'open',
       description: 'Opens directory of min pages',
+    },
+    list: {
+      usage: 'list [pattern]',
+      description: 'Lists all notes that match a pattern.',
     },
   },
   options: [

@@ -6,6 +6,7 @@ import edit from './commands/edit.ts';
 import view from './commands/view.ts';
 import open from './commands/open.ts';
 import remove from './commands/remove.ts';
+import list from './commands/list.ts';
 
 import { helpWriter } from './utils/HelpWriter.ts';
 import { getUserSettings } from './config/index.ts';
@@ -56,6 +57,13 @@ switch (command) {
       helpWriter.write('view');
     } else {
       view(args);
+    }
+    break;
+  case 'list':
+    if (args.help) {
+      helpWriter.write('list');
+    } else {
+      list(args);
     }
     break;
   case 'open':
