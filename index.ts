@@ -29,7 +29,7 @@ let args: Args = parse(Deno.args, {
 });
 
 const settings = await getUserSettings(DEFAULT_CONFIG, args);
-args = { ...args, ...settings };
+args = { ...settings, ...args };
 
 if (args._.length === 0 || ['-h', '--help', 'help'].includes(String(args._))) {
   helpWriter.write();
