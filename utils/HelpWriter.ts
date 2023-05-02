@@ -1,6 +1,6 @@
 import { generateRows, generateTable } from './lib.ts';
 
-type Command = 'app' | 'edit' | 'view' | 'open' | 'remove' | 'list';
+type Command = 'app' | 'edit' | 'cat' | 'open' | 'remove' | 'list';
 
 type CommandDescriptions = Record<
   Command,
@@ -186,16 +186,16 @@ const helpOptions: HelpOptions = {
         ['min remove foo', 'Removes foo.md from default --dir if it exists.'],
       ],
     },
-    view: {
-      usage: 'view <basename>',
+    cat: {
+      usage: 'cat <basename>',
       description: 'Outputs min page to terminal.',
       examples: [
-        ['min view curl', 'Opens a file curl.md in default --dir for editing'],
+        ['min cat curl', 'Opens a file curl.md in default --dir for editing'],
         [
-          'min view --dir ~/sample-dir curl',
+          'min cat --dir ~/sample-dir curl',
           'Opens a file ~/sample-dir/curl.md for editing',
         ],
-        ['min view -e code curl', 'Opens curl.md in default --dir with vscode'],
+        ['min cat -e code curl', 'Opens curl.md in default --dir with vscode'],
       ],
     },
     open: {
