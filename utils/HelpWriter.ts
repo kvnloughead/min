@@ -205,6 +205,13 @@ const helpOptions: HelpOptions = {
     list: {
       usage: 'list [pattern]',
       description: 'Lists all notes that match a pattern.',
+      examples: [
+        ['min list', 'Lists all files in --dir'],
+        [
+          'min list pattern',
+          'Lists all files containing "pattern" in the path',
+        ],
+      ],
     },
   },
   options: [
