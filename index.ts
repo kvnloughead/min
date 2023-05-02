@@ -1,7 +1,7 @@
 #!/usr/bin/env deno run --allow-env --allow-read
 // @deno-types="./app.d.ts"
 
-import { parse } from './deps.ts';
+import { parse, path } from './deps.ts';
 import edit from './commands/edit.ts';
 import view from './commands/view.ts';
 import open from './commands/open.ts';
@@ -36,6 +36,19 @@ if (args._.length === 0 || ['-h', '--help', 'help'].includes(String(args._))) {
   Deno.exit(0);
 }
 
+async function parsePath(args: Args) {
+  try {
+    const dirpath = path.join(args.dir, args.category);
+    const basename = `${args._[1]}.${args.extension}`;
+    const filepath = path.join(dirpath, basename);
+    const file = await Deno.open(filepath);
+    file.close();
+    args.path = { dirpath, basename, filepath, file };
+  } catch (err) {
+    args.error = err;
+  }
+}
+
 const command = parseCommand(args._[0]);
 switch (command) {
   case 'edit':
@@ -56,6 +69,7 @@ switch (command) {
     if (!args._[1] || args.help) {
       helpWriter.write('view');
     } else {
+      await parsePath(args);
       view(args);
     }
     break;

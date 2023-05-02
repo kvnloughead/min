@@ -1,12 +1,33 @@
 // @deno-types="../app.d.ts"
 
-import { copy, path } from '../deps.ts';
+import { readLines } from '../deps.ts';
+import { logError } from '../utils/lib.ts';
 
 async function view(args: Args) {
-  const filepath = path.join(args.dir, `${args._[1]}.${args.extension}`);
+  if (args.error) {
+    logError(args.error);
+    return;
+  }
+  const { filepath } = args.path;
   const file = await Deno.open(filepath);
-  await copy(file, Deno.stdout);
-  file.close();
+
+  const encoder = new TextEncoder();
+  const newline = encoder.encode('\n');
+
+  let isMetadata = false;
+
+  for await (const line of readLines(file)) {
+    if (!args.verbose && !isMetadata && line.startsWith('---')) {
+      isMetadata = true;
+      continue;
+    } else if (!args.verbose && isMetadata && line.startsWith('---')) {
+      isMetadata = false;
+    } else if (!isMetadata) {
+      const lineBytes = encoder.encode(line);
+      await Deno.stdout.write(lineBytes);
+      await Deno.stdout.write(newline);
+    }
+  }
 }
 
 export default view;
