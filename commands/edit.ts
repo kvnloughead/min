@@ -19,14 +19,13 @@ function getMetadata(options: Options) {
   };
 }
 
-async function edit(options: Options, args: string[]) {
-  let dirpath, basename, filepath, file;
+async function edit(options: Options) {
+  const { filepath, basename, dirpath } = options.path;
+
   try {
-    dirpath = path.join(options.dir, options.category);
-    basename = `${args[0]}.${options.extension}`;
-    filepath = path.join(dirpath, basename);
-    file = await Deno.open(filepath);
-    file.close();
+    if (options.error) {
+      throw options.error;
+    }
     openFileInEditor(options.editor, filepath);
   } catch (err) {
     if (options.verbose || err.name !== 'NotFound') {

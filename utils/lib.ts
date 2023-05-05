@@ -106,12 +106,14 @@ export function log(message?: unknown, ...optionalParams: unknown[]) {
 
 export async function parsePath(options: Options, args: string[]) {
   try {
+    // parse path and save to options
     const dirpath = path.join(options.dir, options.category);
     const basename = `${args[0]}.${options.extension}`;
     const filepath = path.join(dirpath, basename);
+    options.path = { dirpath, basename, filepath };
+    // try to open file or throw NotFound
     const file = await Deno.open(filepath);
     file.close();
-    options.path = { dirpath, basename, filepath, file };
   } catch (err) {
     options.error = err;
   }

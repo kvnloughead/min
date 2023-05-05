@@ -2,7 +2,6 @@
 // @deno-types="./app.d.ts"
 
 import { Command, parse } from './deps.ts';
-import { parsePath } from './utils/lib.ts';
 
 import edit from './commands/edit.ts';
 import cat from './commands/cat.ts';
@@ -12,6 +11,7 @@ import cat from './commands/cat.ts';
 
 import { getUserSettings } from './config/index.ts';
 import { DEFAULT_CONFIG } from './utils/constants.ts';
+import { parsePath } from './utils/lib.ts';
 const config = await getUserSettings(DEFAULT_CONFIG, parse(Deno.args));
 
 const program = new Command();
@@ -29,8 +29,10 @@ program
   .globalOption('-v, --verbose', 'Provides verbose logging.')
   .command('edit <filename:string>', 'Opens min page for editing.')
   .arguments('<filename:string>')
-  .action((options: Options, ...args: string[]) => {
-    edit({ ...options, ...config }, args);
+  .action(async (options: Options, ...args: string[]) => {
+    options = { ...options, ...config };
+    await parsePath(options, args);
+    edit(options);
   })
   .command('cat <filename:string>', 'Prints contents of min page to stdout.')
   .arguments('<filename:string>')

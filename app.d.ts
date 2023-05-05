@@ -10,7 +10,6 @@ interface Options {
     dirpath: string;
     basename: string;
     filepath: string;
-    file: Deno.FsFile;
   };
   error?: Error;
   _: string[];
