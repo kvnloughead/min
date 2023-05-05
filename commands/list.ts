@@ -22,9 +22,9 @@ async function listFiles(
   return fileNames;
 }
 
-async function list(args: Args) {
-  const pattern = args._[1];
-  const files = await listFiles(args.dir, pattern);
+async function list(options: Options, args: string[]) {
+  const pattern = args[0];
+  const files = await listFiles(options.dir, pattern);
   if (files.length === 0) log(`No matching files found.`);
   else {
     log(files.join('\n'));
