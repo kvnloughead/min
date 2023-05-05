@@ -1,29 +1,26 @@
 // @deno-types="../app.d.ts"
 
-import { path } from '../deps.ts';
 import { confirmAction, logError } from '../utils/lib.ts';
 
-async function remove(args: Args) {
-  let dirpath, basename, filepath, file;
+async function remove(options: Options) {
   try {
-    dirpath = path.join(args.dir, args.category);
-    basename = `${args._[1]}.${args.extension}`;
-    filepath = path.join(dirpath, basename);
-    file = await Deno.open(filepath);
-    file.close();
+    if (options.error) {
+      throw options.error;
+    }
+    const { filepath } = options.path;
     const confirmRemove = confirmAction(
-      args.force,
-      `\nDelete: ${basename}? (yes|no): `,
+      options.force,
+      `\nDelete: ${options.path.basename}? (yes|no): `,
     );
     if (confirmRemove) {
       await Deno.remove(filepath);
     }
   } catch (err) {
-    if (args.verbose || err.name !== 'NotFound') {
+    if (options.verbose || err.name !== 'NotFound') {
       logError(err);
     }
     if (err.name === 'NotFound') {
-      console.error(`\nFile doesn't exist: ${basename}\n`);
+      console.error(`\nFile doesn't exist: ${options.path.basename}\n`);
     }
   }
 }
