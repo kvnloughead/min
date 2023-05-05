@@ -12,7 +12,7 @@ export async function writeMetadataToFile(
   await Deno.writeTextFile(filepath, `---\n${yamlStringify(metadata)}---`);
 }
 
-export async function parseJsonFile(filepath: string): Promise<Args> {
+export async function parseJsonFile(filepath: string): Promise<Options> {
   const data = await Deno.readFile(filepath);
   const decoder = new TextDecoder('utf-8');
   const text = decoder.decode(data);
@@ -102,4 +102,17 @@ export function logError(err: Error) {
 
 export function log(message?: unknown, ...optionalParams: unknown[]) {
   console.log('\n' + message, ...optionalParams, '\n');
+}
+
+export async function parsePath(options: Options, args: string[]) {
+  try {
+    const dirpath = path.join(options.dir, options.category);
+    const basename = `${args[0]}.${options.extension}`;
+    const filepath = path.join(dirpath, basename);
+    const file = await Deno.open(filepath);
+    file.close();
+    options.path = { dirpath, basename, filepath, file };
+  } catch (err) {
+    options.error = err;
+  }
 }

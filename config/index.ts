@@ -15,7 +15,7 @@ import { DEV_CONFIG } from '../utils/constants.ts';
  */
 export async function getUserSettings(
   defaultFile: string,
-  args: Args,
+  args: Options,
 ): Promise<{
   [x: string]: unknown;
   dir: string;

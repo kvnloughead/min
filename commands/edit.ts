@@ -9,39 +9,39 @@ async function openFileInEditor(editor: string, filepath: string) {
   await process.status();
 }
 
-function getMetadata(args: Args) {
+function getMetadata(options: Options) {
   return {
-    category: args.category,
-    author: args.author,
-    tags: args.tags,
+    category: options.category,
+    author: options.author,
+    tags: options.tags,
     dateCreated: new Date().toLocaleDateString(),
     dateModified: new Date().toLocaleDateString(),
   };
 }
 
-async function edit(args: Args) {
+async function edit(options: Options, args: string[]) {
   let dirpath, basename, filepath, file;
   try {
-    dirpath = path.join(args.dir, args.category);
-    basename = `${args._[1]}.${args.extension}`;
+    dirpath = path.join(options.dir, options.category);
+    basename = `${args[0]}.${options.extension}`;
     filepath = path.join(dirpath, basename);
     file = await Deno.open(filepath);
     file.close();
-    openFileInEditor(args.editor, filepath);
+    openFileInEditor(options.editor, filepath);
   } catch (err) {
-    if (args.verbose || err.name !== 'NotFound') {
+    if (options.verbose || err.name !== 'NotFound') {
       logError(err);
     }
     if (err.name === 'NotFound') {
       const confirmCreateNew = confirmAction(
-        args.force,
+        options.force,
         `File doesn't exist: ${basename}.\nWould you like to create it? (yes|no): `,
       );
       if (confirmCreateNew) {
-        const metadata = getMetadata(args);
+        const metadata = getMetadata(options);
         await Deno.mkdir(dirpath, { recursive: true });
         await writeMetadataToFile(filepath, metadata);
-        openFileInEditor(args.editor, filepath);
+        openFileInEditor(options.editor, filepath);
       }
     }
   }

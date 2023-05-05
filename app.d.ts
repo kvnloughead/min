@@ -1,4 +1,4 @@
-interface Args {
+interface Options {
   [x: string]: unknown;
   category: string;
   extension: string;

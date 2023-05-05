@@ -3,12 +3,12 @@
 import { readLines } from '../deps.ts';
 import { logError } from '../utils/lib.ts';
 
-async function cat(args: Args) {
-  if (args.error) {
-    logError(args.error);
+async function cat(options: Options) {
+  if (options.error) {
+    logError(options.error);
     return;
   }
-  const { filepath } = args.path;
+  const { filepath } = options.path;
   const file = await Deno.open(filepath);
 
   const encoder = new TextEncoder();
@@ -17,10 +17,10 @@ async function cat(args: Args) {
   let isMetadata = false;
 
   for await (const line of readLines(file)) {
-    if (!args.verbose && !isMetadata && line.startsWith('---')) {
+    if (!options.verbose && !isMetadata && line.startsWith('---')) {
       isMetadata = true;
       continue;
-    } else if (!args.verbose && isMetadata && line.startsWith('---')) {
+    } else if (!options.verbose && isMetadata && line.startsWith('---')) {
       isMetadata = false;
     } else if (!isMetadata) {
       const lineBytes = encoder.encode(line);
