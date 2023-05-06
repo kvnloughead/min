@@ -1,7 +1,5 @@
 // @deno-types="../app.d.ts"
 
-import { path } from '../deps.ts';
-
 import { confirmAction, writeMetadataToFile, logError } from '../utils/lib.ts';
 
 async function openFileInEditor(editor: string, filepath: string) {

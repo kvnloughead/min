@@ -31,5 +31,5 @@ export async function getUserSettings(
   const config = { ...defaults, ...userSettings };
   config.cfg = addUserDir(args.cfg || config.cfg);
   config.dir = addUserDir(config.dir);
-  return { ...defaults, ...config };
+  return { ...defaults, ...config, ...args };
 }
