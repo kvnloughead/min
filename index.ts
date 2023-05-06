@@ -7,7 +7,7 @@ import edit from './commands/edit.ts';
 import cat from './commands/cat.ts';
 import remove from './commands/remove.ts';
 import list from './commands/list.ts';
-// import open from './commands/open.ts';
+import open from './commands/open.ts';
 
 import { getUserSettings } from './config/index.ts';
 import { DEFAULT_CONFIG } from './utils/constants.ts';
@@ -58,6 +58,13 @@ program
     options = { ...options, ...config };
     await parsePath(options, args);
     list(options, args);
+  })
+  // open submcommand
+  .command('open')
+  .action(async (options: Options, ...args: string[]) => {
+    options = { ...options, ...config };
+    await parsePath(options, args);
+    open(options);
   });
 
 await program.parse(Deno.args);
