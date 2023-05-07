@@ -3,8 +3,9 @@
 import { confirmAction, writeMetadataToFile, logError } from '../utils/lib.ts';
 
 async function openFileInEditor(editor: string, filepath: string) {
-  const process = Deno.run({ cmd: [editor, filepath] });
-  await process.status();
+  const cmd = new Deno.Command(editor, { args: [filepath] });
+  const child = cmd.spawn();
+  await child.status;
 }
 
 function getMetadata(options: Options) {

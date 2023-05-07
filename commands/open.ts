@@ -1,8 +1,9 @@
 // @deno-types="../app.d.ts"
 
 async function open(options: Options) {
-  const process = Deno.run({ cmd: [options.editor, options.dir] });
-  await process.status();
+  const process = new Deno.Command(options.editor, { args: [options.dir] });
+  const child = process.spawn();
+  await child.status;
   return;
 }
 
