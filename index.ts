@@ -9,14 +9,13 @@ import remove from './commands/remove.ts';
 import list from './commands/list.ts';
 import open from './commands/open.ts';
 
-import { getUserSettings } from './config/index.ts';
-import { DEFAULT_CONFIG } from './utils/constants.ts';
+import { getConfig } from './config/index.ts';
 import { parsePath } from './utils/lib.ts';
-console.log(parse(Deno.args));
 
-const config = await getUserSettings(
-  DEFAULT_CONFIG,
+const config = await getConfig(
+  Deno.env.get('HOME') + `/.config/min/settings.json`,
   parse(Deno.args, {
+    boolean: ['dev', 'force', 'help', 'force'],
     alias: {
       category: 'c',
       cfg: 'config',
@@ -30,19 +29,27 @@ const config = await getUserSettings(
   }),
 );
 
-console.log({ config });
-
 const program = new Command();
 program
   .name('min')
   .version('0.1.0')
   .description('A minimal note-taking app and man page supplement.')
   .globalOption('--dev', 'Run in development mode.')
-  .globalOption('-c, --category <category>', 'Category to place min page in.')
-  .globalOption('--cfg, --config <file>', 'Configuration file to use.')
-  .globalOption('-d, --dir <dir>', 'Directory to store min pages in.')
-  .globalOption('-e, --editor <editor>', 'Editor to open min pages with.')
-  .globalOption('--ext, --extension <ext>', 'Extension of file to create.')
+  .globalOption('-c, --category <category>', 'Category to place min page in.', {
+    default: 'notes',
+  })
+  .globalOption('--cfg, --config <file>', 'Configuration file to use.', {
+    default: Deno.env.get('HOME') + `/.config/min/settings.json`,
+  })
+  .globalOption('-d, --dir <dir>', 'Directory to store min pages in.', {
+    default: Deno.env.get('HOME') + `/.config/min/`,
+  })
+  .globalOption('-e, --editor <editor>', 'Editor to open min pages with.', {
+    default: `vim`,
+  })
+  .globalOption('--ext, --extension <ext>', 'Extension of file to create.', {
+    default: `md`,
+  })
   .globalOption('-f, --force', 'Take action without confirmation.')
   .globalOption('-v, --verbose', 'Provides verbose logging.')
   // edit subcommand
@@ -72,9 +79,8 @@ program
   // list subcommand
   .command('list [pattern]', 'Lists min pages, with optional pattern matching')
   .arguments('[pattern]')
-  .action(async (options: Options, ...args: string[]) => {
+  .action((options: Options, ...args: string[]) => {
     options = { ...options, ...config };
-    await parsePath(options, args);
     list(options, args);
   })
   // open submcommand
