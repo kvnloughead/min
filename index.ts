@@ -11,9 +11,10 @@ import open from './commands/open.ts';
 
 import { getConfig } from './config/index.ts';
 import { parsePath } from './utils/lib.ts';
+import { DEFAULT_CONFIG, DEFAULT_DIR } from './utils/constants.ts';
 
 const config = await getConfig(
-  Deno.env.get('HOME') + `/.config/min/settings.json`,
+  DEFAULT_CONFIG,
   parse(Deno.args, {
     boolean: ['dev', 'force', 'help', 'force'],
     alias: {
@@ -39,10 +40,10 @@ program
     default: 'notes',
   })
   .globalOption('--cfg, --config <file>', 'Configuration file to use.', {
-    default: Deno.env.get('HOME') + `/.config/min/settings.json`,
+    default: DEFAULT_CONFIG,
   })
   .globalOption('-d, --dir <dir>', 'Directory to store min pages in.', {
-    default: Deno.env.get('HOME') + `/.config/min/`,
+    default: DEFAULT_DIR,
   })
   .globalOption('-e, --editor <editor>', 'Editor to open min pages with.', {
     default: `vim`,
