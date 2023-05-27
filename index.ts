@@ -1,7 +1,7 @@
 // #!/usr/bin/env deno run --allow-env --allow-read
 // @deno-types="./app.d.ts"
 
-import { Command, parse } from './deps.ts';
+import { Command, CompletionsCommand, parse } from './deps.ts';
 
 import edit from './commands/edit.ts';
 import cat from './commands/cat.ts';
@@ -10,7 +10,7 @@ import list from './commands/list.ts';
 import open from './commands/open.ts';
 
 import { getConfig } from './config/index.ts';
-import { parsePath } from './utils/lib.ts';
+import { parsePath, listFiles } from './utils/lib.ts';
 import { DEFAULT_CONFIG, DEFAULT_DIR } from './utils/constants.ts';
 
 const config = await getConfig(
@@ -55,8 +55,11 @@ program
   .globalOption('-v, --verbose', 'Provides verbose logging.')
   // edit subcommand
   .command('edit <filename>', 'Opens min page for editing.')
-  .complete('filename', () => {})
-  .arguments('<filename>')
+  .complete('files', async () => {
+    const files = await listFiles(config.dir, config);
+    return files;
+  })
+  .arguments('<filename:string:files>')
   .action(async (options: Options, ...args: string[]) => {
     options = { ...options, ...config };
     await parsePath(options, args);
@@ -93,4 +96,4 @@ program
     open(options);
   });
 
-await program.parse(Deno.args);
+await program.command('completions', new CompletionsCommand()).parse(Deno.args);

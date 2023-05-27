@@ -1,4 +1,7 @@
-export { Command } from 'https://deno.land/x/cliffy@v0.25.7/command/mod.ts';
+export {
+  Command,
+  CompletionsCommand,
+} from 'https://deno.land/x/cliffy@v0.25.7/command/mod.ts';
 
 export { parse } from 'https://deno.land/std@0.183.0/flags/mod.ts';
 export * as path from 'https://deno.land/std@0.183.0/path/mod.ts';
