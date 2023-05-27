@@ -1,7 +1,7 @@
 // #!/usr/bin/env deno run --allow-env --allow-read
 // @deno-types="./app.d.ts"
 
-import { Command, CompletionsCommand, parse } from './deps.ts';
+import { Command, CompletionsCommand, parse, path } from './deps.ts';
 
 import edit from './commands/edit.ts';
 import cat from './commands/cat.ts';
@@ -10,7 +10,7 @@ import list from './commands/list.ts';
 import open from './commands/open.ts';
 
 import { getConfig } from './config/index.ts';
-import { parsePath, listFiles } from './utils/lib.ts';
+import { parsePath, getFiles } from './utils/lib.ts';
 import { DEFAULT_CONFIG, DEFAULT_DIR } from './utils/constants.ts';
 
 const config = await getConfig(
@@ -53,12 +53,13 @@ program
   })
   .globalOption('-f, --force', 'Take action without confirmation.')
   .globalOption('-v, --verbose', 'Provides verbose logging.')
+  .globalComplete('files', async () => {
+    const dir = config.dir + config.category;
+    const files = await getFiles(dir);
+    return files.map((file) => file.name);
+  })
   // edit subcommand
   .command('edit <filename>', 'Opens min page for editing.')
-  .complete('files', async () => {
-    const files = await listFiles(config.dir, config);
-    return files;
-  })
   .arguments('<filename:string:files>')
   .action(async (options: Options, ...args: string[]) => {
     options = { ...options, ...config };
@@ -67,7 +68,7 @@ program
   })
   // cat subcommand
   .command('cat <filename>', 'Prints contents of min page to stdout.')
-  .arguments('<filename>')
+  .arguments('<filename:string:files>')
   .action(async (options: Options, ...args: string[]) => {
     options = { ...options, ...config };
     await parsePath(options, args);
@@ -75,7 +76,7 @@ program
   })
   // remove subcommand
   .command('remove <filename>', 'Deletes min page.')
-  .arguments('<filename>')
+  .arguments('<filename:string:files>')
   .action(async (options: Options, ...args: string[]) => {
     options = { ...options, ...config };
     await parsePath(options, args);
