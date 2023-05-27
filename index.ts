@@ -55,6 +55,7 @@ program
   .globalOption('-v, --verbose', 'Provides verbose logging.')
   // edit subcommand
   .command('edit <filename>', 'Opens min page for editing.')
+  .complete('filename', () => {})
   .arguments('<filename>')
   .action(async (options: Options, ...args: string[]) => {
     options = { ...options, ...config };

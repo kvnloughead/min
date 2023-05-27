@@ -41,7 +41,6 @@ export async function getConfig(
   _: string[];
 }> {
   let config = await parseJsonFile(addUserDir(cfgFile));
-  console.log({ config });
 
   // if a config file is specified in the args, or in the default config file
   // parse the specified config file and add to configuration
