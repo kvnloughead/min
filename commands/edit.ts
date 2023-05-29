@@ -19,7 +19,7 @@ function getMetadata(options: Options) {
 }
 
 async function edit(options: Options) {
-  const { filepath, basename, dirpath } = options.path;
+  const { filepath, dirpath, categoryAndBasename } = options.path;
 
   try {
     if (options.error) {
@@ -33,7 +33,7 @@ async function edit(options: Options) {
     if (err.name === 'NotFound') {
       const confirmCreateNew = confirmAction(
         options.force,
-        `File doesn't exist: ${basename}.\nWould you like to create it? (yes|no): `,
+        `File doesn't exist: ${categoryAndBasename}.\nWould you like to create it? (yes|no): `,
       );
       if (confirmCreateNew) {
         const metadata = getMetadata(options);

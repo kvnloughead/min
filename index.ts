@@ -1,7 +1,7 @@
 // #!/usr/bin/env deno run --allow-env --allow-read
 // @deno-types="./app.d.ts"
 
-import { Command, CompletionsCommand, parse, path } from './deps.ts';
+import { Command, CompletionsCommand, parse } from './deps.ts';
 
 import edit from './commands/edit.ts';
 import cat from './commands/cat.ts';

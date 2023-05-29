@@ -10,6 +10,7 @@ interface Options {
     dirpath: string;
     basename: string;
     filepath: string;
+    categoryAndBasename?: string;
   };
   error?: Error;
   _: string[];
