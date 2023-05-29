@@ -8,6 +8,7 @@ import cat from './commands/cat.ts';
 import remove from './commands/remove.ts';
 import list from './commands/list.ts';
 import open from './commands/open.ts';
+import grep from './commands/grep.ts';
 
 import { getConfig } from './config/index.ts';
 import { parsePath, getFiles } from './utils/lib.ts';
@@ -82,14 +83,21 @@ program
     await parsePath(options, args);
     remove(options);
   })
-  // list subcommand
   .command('list [pattern]', 'Lists min pages, with optional pattern matching')
   .arguments('[pattern]')
   .action((options: Options, ...args: string[]) => {
     options = { ...options, ...config };
     list(options, args);
   })
-  // open submcommand
+  .command(
+    'grep <pattern>',
+    'Greps through min pages, using `grep -inr --color=auto` by default.',
+  )
+  .action(async (options: Options, ...args: string[]) => {
+    options = { ...options, ...config };
+    await parsePath(options, args);
+    grep(options, args);
+  })
   .command('open')
   .action(async (options: Options, ...args: string[]) => {
     options = { ...options, ...config };
