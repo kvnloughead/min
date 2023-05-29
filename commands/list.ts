@@ -1,8 +1,7 @@
 // @deno-types="../app.d.ts"
 
-import { ParsedPath } from 'https://deno.land/std@0.183.0/path/_interface.ts';
-import { getFiles } from '../utils/lib.ts';
-import { log } from '../utils/lib.ts';
+import { ParsedPath } from '../deps.ts';
+import { getFiles, log } from '../utils/lib.ts';
 
 async function list(options: Options, args: string[]) {
   const pattern = args[0];
