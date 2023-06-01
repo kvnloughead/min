@@ -62,6 +62,10 @@ program
   // edit subcommand
   .command('edit <filename>', 'Opens min page for editing.')
   .arguments('<filename:string:files>')
+  .option(
+    '--title <title>',
+    "Title for the min page. For use with something like a blog post, that would have a title that's distinct from its filename.",
+  )
   .action(async (options: Options, ...args: string[]) => {
     options = { ...options, ...config };
     await parsePath(options, args);
