@@ -1,17 +1,7 @@
 import { ALIASES } from './constants.ts';
 
-import { path, yamlStringify } from '../deps.ts';
+import { path } from '../deps.ts';
 import { ParsedPath } from 'https://deno.land/std@0.183.0/path/_interface.ts';
-
-export async function writeMetadataToFile(
-  filepath: string,
-  metadata: Record<string, unknown>,
-): Promise<void> {
-  Object.keys(metadata).forEach(
-    (key) => metadata[key] === undefined && delete metadata[key],
-  );
-  await Deno.writeTextFile(filepath, `---\n${yamlStringify(metadata)}---`);
-}
 
 export async function parseJsonFile(filepath: string): Promise<Options> {
   const data = await Deno.readFile(filepath);
@@ -43,7 +33,7 @@ export function generateRows(
   });
 
   // Create the table rows
-  const rows = data.map((row, i) => {
+  const rows = data.map((row) => {
     const cells = row.map((cell, index) =>
       cell.padEnd(Math.max(lengths[index], minWidths[index] || 0)),
     );

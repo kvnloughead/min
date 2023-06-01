@@ -1,21 +1,15 @@
 // @deno-types="../app.d.ts"
 
-import { confirmAction, writeMetadataToFile, logError } from '../utils/lib.ts';
+import { confirmAction, logError } from '../utils/lib.ts';
+import {
+  getMetadataFromOptions,
+  writeMetadataToFile,
+} from '../utils/metadata.ts';
 
 async function openFileInEditor(editor: string, filepath: string) {
   const cmd = new Deno.Command(editor, { args: [filepath] });
   const child = cmd.spawn();
   await child.status;
-}
-
-function getMetadata(options: Options) {
-  return {
-    category: options.category,
-    author: options.author,
-    tags: options.tags,
-    dateCreated: new Date().toLocaleDateString(),
-    dateModified: new Date().toLocaleDateString(),
-  };
 }
 
 async function edit(options: Options) {
@@ -36,7 +30,7 @@ async function edit(options: Options) {
         `File doesn't exist: ${categoryAndBasename}.\nWould you like to create it? (yes|no): `,
       );
       if (confirmCreateNew) {
-        const metadata = getMetadata(options);
+        const metadata = getMetadataFromOptions(options);
         await Deno.mkdir(dirpath, { recursive: true });
         await writeMetadataToFile(filepath, metadata);
         openFileInEditor(options.editor, filepath);
