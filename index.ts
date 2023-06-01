@@ -66,6 +66,7 @@ program
     '--title <title>',
     "Title for the min page. For use with something like a blog post, that would have a title that's distinct from its filename.",
   )
+  .option('-t, --tags <tags...>', 'One or more single-word tags.')
   .action(async (options: Options, ...args: string[]) => {
     options = { ...options, ...config };
     await parsePath(options, args);
