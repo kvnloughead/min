@@ -2,14 +2,19 @@
 
 import { yamlStringify } from '../deps.ts';
 
+function getTime(date: Date) {
+  const offset = date.getTimezoneOffset();
+  date = new Date(date.getTime() - offset * 60 * 1000);
+  return date.toISOString();
+}
+
 export function getMetadataFromOptions(options: Options) {
   return {
     category: options.category,
     author: options.author,
     tags: options.tags,
     title: options.title,
-    dateCreated: new Date().toLocaleDateString(),
-    dateModified: new Date().toLocaleDateString(),
+    date: getTime(new Date()),
   };
 }
 
