@@ -88,7 +88,7 @@ program
     await parsePath(options, args);
     remove(options);
   })
-  .command('list [pattern]', 'Lists min pages, with optional pattern matching')
+  .command('list [pattern]', 'Lists min pages, with optional pattern matching.')
   .arguments('[pattern]')
   .action((options: Options, ...args: string[]) => {
     options = { ...options, ...config };
@@ -103,7 +103,7 @@ program
     await parsePath(options, args);
     grep(options, args);
   })
-  .command('open')
+  .command('open', 'Opens min directory in your chosen edit.')
   .action(async (options: Options, ...args: string[]) => {
     options = { ...options, ...config };
     await parsePath(options, args);
