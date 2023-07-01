@@ -114,15 +114,25 @@ export async function parsePath(options: Options, args: string[]) {
 export async function getFiles(
   directory: string,
   pattern?: RegExp | string,
+  options?: { recursive: boolean },
 ): Promise<ParsedPath[]> {
-  const files: ParsedPath[] = [];
+  let files: ParsedPath[] = [];
   const regex =
     pattern instanceof RegExp ? pattern : pattern && new RegExp(pattern);
   for await (const dirEntry of Deno.readDir(directory)) {
+    if (dirEntry.isDirectory && options?.recursive) {
+      files = [
+        ...files,
+        ...(await getFiles(
+          path.join(directory, dirEntry.name),
+          pattern,
+          options,
+        )),
+      ];
+    }
     if (dirEntry.isFile && (!regex || regex.test(dirEntry.name))) {
       files.push(path.parse(path.join(directory, dirEntry.name)));
     }
   }
-
   return files;
 }

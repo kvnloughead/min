@@ -89,6 +89,13 @@ program
     remove(options);
   })
   .command('list [pattern]', 'Lists min pages, with optional pattern matching.')
+  .option(
+    '-c, --category <category>',
+    'Category to include in search. Set to `all` to include all categories.',
+    {
+      default: 'notes',
+    },
+  )
   .arguments('[pattern]')
   .action((options: Options, ...args: string[]) => {
     options = { ...options, ...config };
