@@ -1,5 +1,3 @@
-import { ALIASES } from './constants.ts';
-
 import { path } from '../deps.ts';
 import { ParsedPath } from 'https://deno.land/std@0.183.0/path/_interface.ts';
 
@@ -55,18 +53,6 @@ export function generateTable(
   minWidths: number[] = [],
 ): string {
   return generateRows(data, indent, minWidths).join('\n');
-}
-
-/**
- * Parses a cli command, returning original command, or the appropriate alias.
- *
- * @param {string} command - a cli command or alias
- * @returns {{string|undefined}} - the command corresponding to the alias, or else the original command param
- */
-export function parseCommand(command: string): string | undefined {
-  const commands = Object.keys(ALIASES.commands);
-  if (commands.includes(command)) return command;
-  return commands.find((key) => ALIASES.commands[key] === command) || command;
 }
 
 /**
