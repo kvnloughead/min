@@ -60,7 +60,7 @@ program
     return files.map((file) => file.name);
   })
   // edit subcommand
-  .command('edit <filename>', 'Opens min page for editing.')
+  .command('edit, e <filename>', 'Opens min page for editing.')
   .arguments('<filename:string:files>')
   .option(
     '--title <title>',
@@ -73,7 +73,7 @@ program
     edit(options);
   })
   // cat subcommand
-  .command('cat <filename>', 'Prints contents of min page to stdout.')
+  .command('cat, c <filename>', 'Prints contents of min page to stdout.')
   .arguments('<filename:string:files>')
   .action(async (options: Options, ...args: string[]) => {
     options = { ...options, ...config };
@@ -81,14 +81,17 @@ program
     cat(options);
   })
   // remove subcommand
-  .command('remove <filename>', 'Deletes min page.')
+  .command('rm, r, remove <filename>', 'Deletes min page.')
   .arguments('<filename:string:files>')
   .action(async (options: Options, ...args: string[]) => {
     options = { ...options, ...config };
     await parsePath(options, args);
     remove(options);
   })
-  .command('list [pattern]', 'Lists min pages, with optional pattern matching.')
+  .command(
+    'ls, l, list [pattern]',
+    'Lists min pages, with optional pattern matching.',
+  )
   .option(
     '-c, --category <category>',
     'Category to include in search. Set to `all` to include all categories.',
@@ -102,7 +105,7 @@ program
     list(options, args);
   })
   .command(
-    'grep <pattern>',
+    'g, grep <pattern>',
     'Greps through min pages, using `grep -inr --color=auto` by default.',
   )
   .action(async (options: Options, ...args: string[]) => {
@@ -110,7 +113,7 @@ program
     await parsePath(options, args);
     grep(options, args);
   })
-  .command('open', 'Opens min directory in your chosen edit.')
+  .command('o, open', 'Opens min directory in your chosen edit.')
   .action(async (options: Options, ...args: string[]) => {
     options = { ...options, ...config };
     await parsePath(options, args);
