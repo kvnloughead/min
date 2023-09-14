@@ -12,6 +12,7 @@ interface Options {
     filepath: string;
     categoryAndBasename?: string;
   };
+  newName?: string;
   error?: Error;
   _: string[];
 }
