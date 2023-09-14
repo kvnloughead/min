@@ -61,8 +61,6 @@ program
     return files.map((file) => file.name);
   })
   // edit subcommand
-  .command("e, edit <filename>", "Opens min page for editing.")
-  .arguments("<filename:string:files>")
   .command("edit, e <filename>", "Opens min page for editing.")
   .arguments("<filename:string:files>")
   .option(
@@ -76,8 +74,6 @@ program
     edit(options);
   })
   // cat subcommand
-  .command("c, cat <filename>", "Prints contents of min page to stdout.")
-  .arguments("<filename:string:files>")
   .command("cat, c <filename>", "Prints contents of min page to stdout.")
   .arguments("<filename:string:files>")
   .action(async (options: Options, ...args: string[]) => {
@@ -86,7 +82,7 @@ program
     cat(options);
   })
   // remove subcommand
-  .command("mv, rn, rename <filename> <newname>", "Renames min page.")
+  .command("rename, mv, rn <filename> <newname>", "Renames min page.")
   .arguments("<filename:string:files> <newname:string:files>")
   .action(async (options: Options, ...args: string[]) => {
     options = { ...options, ...config, newName: args[1] };
@@ -94,7 +90,7 @@ program
     rename(options);
   })
   // remove subcommand
-  .command("rm, r, remove <filename>", "Deletes min page.")
+  .command("remove, rm, r <filename>", "Deletes min page.")
   .arguments("<filename:string:files>")
   .action(async (options: Options, ...args: string[]) => {
     options = { ...options, ...config };
