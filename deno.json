@@ -4,6 +4,7 @@
   },
   "tasks": {
     "dev": "deno run --allow-run --allow-read --allow-env --allow-write index.ts --dev",
-    "prod": "deno run --allow-run --allow-read --allow-env --allow-write index.ts"
+    "prod": "deno run --allow-run --allow-read --allow-env --allow-write index.ts",
+    "install": "deno install --allow-run --allow-read --allow-env --allow-write --global --name min index.ts"
   }
 }
