@@ -129,4 +129,13 @@ program
     open(options);
   });
 
-await program.command("completions", new CompletionsCommand()).parse(Deno.args);
+try {
+  await program
+    .command("completions", new CompletionsCommand())
+    .parse(Deno.args);
+} catch (error) {
+  if (!(error instanceof Deno.errors.BrokenPipe)) {
+    throw error;
+  }
+  // Silently handle BrokenPipe errors from completion generation
+}
