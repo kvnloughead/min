@@ -29,12 +29,13 @@ async function cat(options: Options) {
       }
     }
   } catch (err) {
-    if (options.verbose || err.name !== "NotFound") {
-      logError(err);
+    const error = err instanceof Error ? err : new Error(String(err));
+    if (options.verbose || error.name !== "NotFound") {
+      logError(error);
     }
-    if (err.name === "NotFound") {
+    if (error.name === "NotFound") {
       console.error(
-        `\nFile doesn't exist: ${options.path.categoryAndBasename}\n`,
+        `\nFile doesn't exist: ${options.path.categoryAndBasename}\n`
       );
     }
   }

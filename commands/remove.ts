@@ -12,16 +12,17 @@ async function remove(options: Options) {
 
     const confirmRemove = confirmAction(
       options.force,
-      `\nDelete: ${path.categoryAndBasename}? (yes|no): `,
+      `\nDelete: ${path.categoryAndBasename}? (yes|no): `
     );
     if (confirmRemove) {
       await Deno.remove(path.filepath);
     }
   } catch (err) {
-    if (options.verbose || err.name !== "NotFound") {
-      logError(err);
+    const error = err instanceof Error ? err : new Error(String(err));
+    if (options.verbose || error.name !== "NotFound") {
+      logError(error);
     }
-    if (err.name === "NotFound") {
+    if (error.name === "NotFound") {
       console.error(`\nFile doesn't exist: ${path.categoryAndBasename}\n`);
     }
   }

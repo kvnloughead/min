@@ -22,7 +22,7 @@ export function addUserDir(filepath: string) {
 export function generateRows(
   data: string[][],
   indent = 0,
-  minWidths: number[] = [],
+  minWidths: number[] = []
 ): string[] {
   // Determine the maximum length of each column
   const lengths = data[0].map((_, index) => {
@@ -50,7 +50,7 @@ export function generateRows(
 export function generateTable(
   data: string[][],
   indent = 0,
-  minWidths: number[] = [],
+  minWidths: number[] = []
 ): string {
   return generateRows(data, indent, minWidths).join("\n");
 }
@@ -99,10 +99,10 @@ export async function parsePath(options: Options, args: string[]) {
     if (err instanceof Deno.errors.NotFound) {
       // Convert the technical error into a user-friendly message
       options.error = new Error(
-        `Unable to access path: ${options.dir}\nPlease check if the directory exists and you have proper permissions.`,
+        `Unable to access path: ${options.dir}\nPlease check if the directory exists and you have proper permissions.`
       );
     } else {
-      options.error = err;
+      options.error = err instanceof Error ? err : new Error(String(err));
     }
   }
 }
@@ -110,12 +110,11 @@ export async function parsePath(options: Options, args: string[]) {
 export async function getFiles(
   directory: string,
   pattern?: RegExp | string,
-  options?: { recursive: boolean },
+  options?: { recursive: boolean }
 ): Promise<ParsedPath[]> {
   let files: ParsedPath[] = [];
-  const regex = pattern instanceof RegExp
-    ? pattern
-    : pattern && new RegExp(pattern);
+  const regex =
+    pattern instanceof RegExp ? pattern : pattern && new RegExp(pattern);
   for await (const dirEntry of Deno.readDir(directory)) {
     if (dirEntry.isDirectory && options?.recursive) {
       files = [
@@ -123,7 +122,7 @@ export async function getFiles(
         ...(await getFiles(
           path.join(directory, dirEntry.name),
           pattern,
-          options,
+          options
         )),
       ];
     }

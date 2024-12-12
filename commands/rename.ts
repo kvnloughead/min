@@ -13,17 +13,18 @@ async function rename(options: Options) {
 
     const confirmRename = confirmAction(
       options.force,
-      `\nRename: ${path.categoryAndBasename} to ${newCategoryAndBasename}? (yes|no): `,
+      `\nRename: ${path.categoryAndBasename} to ${newCategoryAndBasename}? (yes|no): `
     );
     if (confirmRename && newName) {
       const newPath = `${path.dirpath}/${newBasename}`;
       await Deno.rename(path.filepath, newPath);
     }
   } catch (err) {
-    if (options.verbose || err.name !== "NotFound") {
-      logError(err);
+    const error = err instanceof Error ? err : new Error(String(err));
+    if (options.verbose || error.name !== "NotFound") {
+      logError(error);
     }
-    if (err.name === "NotFound") {
+    if (error.name === "NotFound") {
       console.error(`\nFile doesn't exist: ${path.filepath}\n`);
     }
   }

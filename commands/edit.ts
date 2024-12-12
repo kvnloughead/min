@@ -14,7 +14,7 @@ async function openFileInEditor(editor: string, filepath: string) {
   } catch (err) {
     if (err instanceof Deno.errors.NotFound) {
       throw new Error(
-        `Editor '${editor}' not found. Please check your editor setting.`,
+        `Editor '${editor}' not found. Please check your editor setting.`
       );
     }
     throw err;
@@ -35,7 +35,7 @@ async function edit(options: Options) {
       if (err instanceof Deno.errors.NotFound) {
         const confirmCreateNew = confirmAction(
           options.force,
-          `File doesn't exist: ${categoryAndBasename}.\nWould you like to create it? (yes|no): `,
+          `File doesn't exist: ${categoryAndBasename}.\nWould you like to create it? (yes|no): `
         );
         if (confirmCreateNew) {
           const metadata = getMetadataFromOptions(options);
@@ -53,10 +53,11 @@ async function edit(options: Options) {
     await openFileInEditor(options.editor, filepath);
   } catch (err) {
     // Only show stack trace for unexpected errors
-    if (err.message?.includes("Editor") || options.verbose) {
-      console.error(err.message);
+    const error = err instanceof Error ? err : new Error(String(err));
+    if (error.message?.includes("Editor") || options.verbose) {
+      console.error(error.message);
     } else {
-      logError(err);
+      logError(error);
     }
   }
 }
