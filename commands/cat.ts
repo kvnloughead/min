@@ -1,7 +1,7 @@
 // @deno-types="../app.d.ts"
 
-import { readLines } from '../deps.ts';
-import { logError } from '../utils/lib.ts';
+import { readLines } from "../deps.ts";
+import { logError } from "../utils/lib.ts";
 
 async function cat(options: Options) {
   try {
@@ -12,15 +12,15 @@ async function cat(options: Options) {
     const file = await Deno.open(filepath);
 
     const encoder = new TextEncoder();
-    const newline = encoder.encode('\n');
+    const newline = encoder.encode("\n");
 
     let isMetadata = false;
 
     for await (const line of readLines(file)) {
-      if (!options.verbose && !isMetadata && line.startsWith('---')) {
+      if (!options.verbose && !isMetadata && line.startsWith("---")) {
         isMetadata = true;
         continue;
-      } else if (!options.verbose && isMetadata && line.startsWith('---')) {
+      } else if (!options.verbose && isMetadata && line.startsWith("---")) {
         isMetadata = false;
       } else if (!isMetadata) {
         const lineBytes = encoder.encode(line);
@@ -29,10 +29,10 @@ async function cat(options: Options) {
       }
     }
   } catch (err) {
-    if (options.verbose || err.name !== 'NotFound') {
+    if (options.verbose || err.name !== "NotFound") {
       logError(err);
     }
-    if (err.name === 'NotFound') {
+    if (err.name === "NotFound") {
       console.error(
         `\nFile doesn't exist: ${options.path.categoryAndBasename}\n`,
       );

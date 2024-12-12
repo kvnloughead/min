@@ -29,7 +29,7 @@ const config = await getConfig(
       help: "h",
       verbose: "v",
     },
-  }),
+  })
 );
 
 const program = new Command();
@@ -65,7 +65,7 @@ program
   .arguments("<filename:string:files>")
   .option(
     "--title <title>",
-    "Title for the min page. For use with something like a blog post, that would have a title that's distinct from its filename.",
+    "Title for the min page. For use with something like a blog post, that would have a title that's distinct from its filename."
   )
   .option("-t, --tags <tags...>", "One or more single-word tags.")
   .action(async (options: Options, ...args: string[]) => {
@@ -99,14 +99,14 @@ program
   })
   .command(
     "ls, l, list [pattern]",
-    "Lists min pages, with optional pattern matching.",
+    "Lists min pages, with optional pattern matching."
   )
   .option(
     "-c, --category <category>",
     "Category to include in search. Set to `all` to include all categories.",
     {
       default: "notes",
-    },
+    }
   )
   .arguments("[pattern]")
   .action((options: Options, ...args: string[]) => {
@@ -115,7 +115,7 @@ program
   })
   .command(
     "g, grep <pattern>",
-    "Greps through min pages, using `grep -inr --color=auto` by default.",
+    "Greps through min pages, using `grep -inr --color=auto` by default."
   )
   .action(async (options: Options, ...args: string[]) => {
     options = { ...options, ...config };

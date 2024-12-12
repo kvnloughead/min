@@ -1,6 +1,6 @@
 // @deno-types="../app.d.ts"
 
-import { confirmAction, logError } from '../utils/lib.ts';
+import { confirmAction, logError } from "../utils/lib.ts";
 
 async function remove(options: Options) {
   const { path } = options;
@@ -18,10 +18,10 @@ async function remove(options: Options) {
       await Deno.remove(path.filepath);
     }
   } catch (err) {
-    if (options.verbose || err.name !== 'NotFound') {
+    if (options.verbose || err.name !== "NotFound") {
       logError(err);
     }
-    if (err.name === 'NotFound') {
+    if (err.name === "NotFound") {
       console.error(`\nFile doesn't exist: ${path.categoryAndBasename}\n`);
     }
   }

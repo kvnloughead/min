@@ -13,7 +13,7 @@ async function rename(options: Options) {
 
     const confirmRename = confirmAction(
       options.force,
-      `\nRename: ${path.categoryAndBasename} to ${newCategoryAndBasename}? (yes|no): `,
+      `\nRename: ${path.categoryAndBasename} to ${newCategoryAndBasename}? (yes|no): `
     );
     if (confirmRename && newName) {
       const newPath = `${path.dirpath}/${newBasename}`;

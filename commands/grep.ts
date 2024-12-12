@@ -3,12 +3,12 @@
 async function grep(options: Options, args: string[]) {
   const { category, dir, path } = options;
   const pattern = args[0];
-  const cmd = new Deno.Command('grep', {
+  const cmd = new Deno.Command("grep", {
     args: [
-      '-inr',
-      '--color=auto',
+      "-inr",
+      "--color=auto",
       pattern,
-      category === 'all' ? dir : path.dirpath,
+      category === "all" ? dir : path.dirpath,
     ],
   });
   const child = cmd.spawn();

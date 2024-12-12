@@ -1,5 +1,5 @@
-import { parseJsonFile, addUserDir } from '../utils/lib.ts';
-import { DEFAULT_DIR } from '../utils/constants.ts';
+import { addUserDir, parseJsonFile } from "../utils/lib.ts";
+import { DEFAULT_DIR } from "../utils/constants.ts";
 
 /**
  * Retrieves configuration settings from a file, and merges them with the

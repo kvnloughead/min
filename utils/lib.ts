@@ -1,15 +1,15 @@
-import { path } from '../deps.ts';
-import { ParsedPath } from 'https://deno.land/std@0.183.0/path/_interface.ts';
+import { path } from "../deps.ts";
+import { ParsedPath } from "https://deno.land/std@0.183.0/path/_interface.ts";
 
 export async function parseJsonFile(filepath: string): Promise<Options> {
   const data = await Deno.readFile(filepath);
-  const decoder = new TextDecoder('utf-8');
+  const decoder = new TextDecoder("utf-8");
   const text = decoder.decode(data);
   return JSON.parse(text);
 }
 
 export function addUserDir(filepath: string) {
-  const home = Deno.env.get('HOME') || '';
+  const home = Deno.env.get("HOME") || "";
   return filepath.startsWith(home) ? filepath : path.join(home, filepath);
 }
 
@@ -33,9 +33,9 @@ export function generateRows(
   // Create the table rows
   const rows = data.map((row) => {
     const cells = row.map((cell, index) =>
-      cell.padEnd(Math.max(lengths[index], minWidths[index] || 0)),
+      cell.padEnd(Math.max(lengths[index], minWidths[index] || 0))
     );
-    return ' '.repeat(indent) + cells.join(' ');
+    return " ".repeat(indent) + cells.join(" ");
   });
 
   return rows;
@@ -52,11 +52,10 @@ export function generateTable(
   indent = 0,
   minWidths: number[] = [],
 ): string {
-  return generateRows(data, indent, minWidths).join('\n');
+  return generateRows(data, indent, minWidths).join("\n");
 }
 
 /**
- *
  * Confirms an action with the user if force is falsey.
  *
  * @param {boolean} force - If true, the action will be confirmed without prompting the user.
@@ -68,7 +67,7 @@ export function confirmAction(force: boolean, msg: string) {
   if (!force) {
     confirm = prompt(msg);
   }
-  return force || (confirm && ['y', 'yes'].includes(confirm.toLowerCase()));
+  return force || (confirm && ["y", "yes"].includes(confirm.toLowerCase()));
 }
 
 export function logError(err: Error) {
@@ -78,7 +77,7 @@ export function logError(err: Error) {
 }
 
 export function log(message?: unknown, ...optionalParams: unknown[]) {
-  console.log('\n' + message, ...optionalParams, '\n');
+  console.log("\n" + message, ...optionalParams, "\n");
 }
 
 export async function parsePath(options: Options, args: string[]) {
@@ -103,8 +102,9 @@ export async function getFiles(
   options?: { recursive: boolean },
 ): Promise<ParsedPath[]> {
   let files: ParsedPath[] = [];
-  const regex =
-    pattern instanceof RegExp ? pattern : pattern && new RegExp(pattern);
+  const regex = pattern instanceof RegExp
+    ? pattern
+    : pattern && new RegExp(pattern);
   for await (const dirEntry of Deno.readDir(directory)) {
     if (dirEntry.isDirectory && options?.recursive) {
       files = [
