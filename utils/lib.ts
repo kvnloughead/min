@@ -82,29 +82,39 @@ export function log(message?: unknown, ...optionalParams: unknown[]) {
 
 export async function parsePath(options: Options, args: string[]) {
   try {
-    // parse path and save to options
-    const dirpath = path.join(options.dir, options.category);
-    const basename = `${args[0]}.${options.extension}`;
-    const categoryAndBasename = path.join(options.category, basename);
-    const filepath = path.join(dirpath, basename);
-    options.path = { dirpath, basename, categoryAndBasename, filepath };
-    // try to open file or throw NotFound
-    const file = await Deno.open(filepath);
-    file.close();
+    const basename = args[0];
+    const extension = options.extension ? `.${options.extension}` : "";
+    const category = options.category || "notes";
+    const dirpath = path.join(options.dir, category);
+    const filepath = path.join(dirpath, `${basename}${extension}`);
+    const categoryAndBasename = path.join(category, basename);
+
+    options.path = {
+      basename,
+      dirpath,
+      filepath,
+      categoryAndBasename,
+    };
   } catch (err) {
-    options.error = err;
+    if (err instanceof Deno.errors.NotFound) {
+      // Convert the technical error into a user-friendly message
+      options.error = new Error(
+        `Unable to access path: ${options.dir}\nPlease check if the directory exists and you have proper permissions.`
+      );
+    } else {
+      options.error = err;
+    }
   }
 }
 
 export async function getFiles(
   directory: string,
   pattern?: RegExp | string,
-  options?: { recursive: boolean },
+  options?: { recursive: boolean }
 ): Promise<ParsedPath[]> {
   let files: ParsedPath[] = [];
-  const regex = pattern instanceof RegExp
-    ? pattern
-    : pattern && new RegExp(pattern);
+  const regex =
+    pattern instanceof RegExp ? pattern : pattern && new RegExp(pattern);
   for await (const dirEntry of Deno.readDir(directory)) {
     if (dirEntry.isDirectory && options?.recursive) {
       files = [
