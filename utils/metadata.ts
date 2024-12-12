@@ -20,10 +20,10 @@ export function getMetadataFromOptions(options: Options) {
 
 export async function writeMetadataToFile(
   filepath: string,
-  metadata: Record<string, unknown>
+  metadata: Record<string, unknown>,
 ): Promise<void> {
   Object.keys(metadata).forEach(
-    (key) => metadata[key] === undefined && delete metadata[key]
+    (key) => metadata[key] === undefined && delete metadata[key],
   );
   await Deno.writeTextFile(filepath, `---\n${yamlStringify(metadata)}---`);
 }

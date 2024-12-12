@@ -99,7 +99,7 @@ export async function parsePath(options: Options, args: string[]) {
     if (err instanceof Deno.errors.NotFound) {
       // Convert the technical error into a user-friendly message
       options.error = new Error(
-        `Unable to access path: ${options.dir}\nPlease check if the directory exists and you have proper permissions.`
+        `Unable to access path: ${options.dir}\nPlease check if the directory exists and you have proper permissions.`,
       );
     } else {
       options.error = err;
@@ -110,11 +110,12 @@ export async function parsePath(options: Options, args: string[]) {
 export async function getFiles(
   directory: string,
   pattern?: RegExp | string,
-  options?: { recursive: boolean }
+  options?: { recursive: boolean },
 ): Promise<ParsedPath[]> {
   let files: ParsedPath[] = [];
-  const regex =
-    pattern instanceof RegExp ? pattern : pattern && new RegExp(pattern);
+  const regex = pattern instanceof RegExp
+    ? pattern
+    : pattern && new RegExp(pattern);
   for await (const dirEntry of Deno.readDir(directory)) {
     if (dirEntry.isDirectory && options?.recursive) {
       files = [
